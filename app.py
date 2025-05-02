@@ -18,7 +18,7 @@ app.config['SECRET_KEY'] = 'секретный_ключ'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///newflask.db'
 app.config['UPLOAD_FOLDER'] = 'upload'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#app.secret_key = 'your-secret-key'
+    #app.secret_key = 'your-secret-key'
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)                                   # Ініціалізується менеджер авторизації Flask-Login, підключений до цього Flask-додатку.
 login_manager.login_view = 'login'                                  # Вказується ім'я маршруту ('login'), куди Flask-Login перенаправлятиметься неавторизованим користувачам
@@ -51,13 +51,13 @@ def load_user(user_id):
 @login_required
 def home():
     if current_user.role == 'teacher':
-        greeting = "Доброго дня, вчитель!"
+        return render_template('teacher.html')
     elif current_user.role == 'student':
-        greeting = "Раді тебе бачити, учень!"
+        return render_template('student.html')
     elif current_user.role == 'parent':
-        greeting = "Доброго дня, батьки!"
+        return render_template('parent.html')
     else:
-        greeting = "WELCOME!"
+        return render_template('Index.html')
 
     return f'{greeting} Ваш логин: {current_user.name}'
 
