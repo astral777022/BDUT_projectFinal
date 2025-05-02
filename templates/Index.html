@@ -70,7 +70,9 @@
 							<span id="monthYear"></span>
 							<button id="btnNext" type="button">Наступний</button>
 						</div>
-						<div id="divCal" class="calendar-table"></div>
+						<div id="divCal" class="calendar-table">
+							
+						</div>
 						<div class="calendar-buttons">
 							<a href="#" class="podii-2">Всі події цього місяця</a>
 						</div>
@@ -101,7 +103,6 @@
 			</div>
 			<form method="POST" action="{{ url_for('register') }}" class="modal-1__form d-flex flex-column js-form" id="popupResult-1">
 				<div class="modal-1__block-input d-flex flex-column">
-					<input id="login-f1" class="modal-input" type="text" name="login" placeholder="Логін" required>
 					<input id="name-f1" class="modal-input" type="text" name="name" placeholder="Ім'я користувача" required>
 					<input id="surname-f1" class="modal-input" type="text" name="surname" placeholder="Призвіще" required>
 					<input id="tel-f1" class="modal-input" type="text" name="tel" placeholder="Телефон" required>
@@ -124,7 +125,7 @@
 						<option value="student">Учень</option>
 						<option value="parent">Батьки</option>
 					</select>
-
+					<input id="login-f1" class="modal-input" type="text" name="login" placeholder="Ваш e-mail" required>
 					<input type="password" id="pass-f1" class="modal-input" name="password" minlength="6" placeholder="Введіть пароль" required>
 					<button class="button modal-button" type="data-submit">Реєструватися</button>
 				</div>
@@ -134,8 +135,10 @@
 
 	<div style="display: none;"> <!-- Вікно входу -->
 		<div class="box-modal" id="exampleModal-2">
-			<div class="box-modal_close arcticmodal-close"><img src="{{url_for('static', filename='img/close.png')}}" class="close"></div>
-			<form action="/success.php" class="modal-2__form d-flex flex-column js-form" id="popupResult-2">
+			<div class="box-modal_close arcticmodal-close">
+				<img src="{{url_for('static', filename='img/close.png')}}" class="close">
+			</div>
+			<form method="POST" action="{{ url_for('login') }}" class="modal-2__form d-flex flex-column js-form" id="popupResult-2">
 				<div class="modal-2__block-input d-flex flex-column">
 					<input id="name-f2" class="modal-input" type="text" name="login" placeholder="Ваш e-mail">
 					<input type="password" id="pass-f2" class="modal-input" name="password" minlength="6" placeholder="Введіть пароль">
@@ -147,7 +150,9 @@
 
 	<div style="display: none;">
 		<div class="box-modal" id="exampleModal-3">
-			<div class="box-modal_close arcticmodal-close"><img src="{{url_for('static', filename='img/close.png')}}" class="close"></div>
+			<div class="box-modal_close arcticmodal-close">
+				<img src="{{url_for('static', filename='img/close.png')}}" class="close">
+			</div>
 			<div>
 				<div class="date">
 					<p id="selectedDate"></p>
@@ -161,7 +166,9 @@
 
 	<div style="display: none;">
 		<div class="box-modal" id="exampleModal-4">
-			<div class="box-modal_close arcticmodal-close"><img src="{{url_for('static', filename='img/close.png')}}" class="close"></div>
+			<div class="box-modal_close arcticmodal-close">
+				<img src="{{url_for('static', filename='img/close.png')}}" class="close">
+			</div>
 			<div class="date">
 				<p id="currentMonth"></p>
 			</div>
