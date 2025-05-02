@@ -143,27 +143,27 @@ class Admin(db.Model):
 # Декоратор головної сторінки
 @app.route("/index")
 def index():
-    return render_template('Index')
+    return render_template('Index.html')
 
 @app.route("/teacher")
 def teacher():
-    return render_template('teacher')
+    return render_template('teacher.html')
 
 @app.route("/parents")
 def parent():
-    return render_template('parents')
+    return render_template('parents.html')
 
 @app.route("/student")
 def student():
-    return render_template('student')
+    return render_template('student.html')
 
 @app.route("/calendar")
 def calendar():
-    return render_template('calendar')
+    return render_template('calendar.html')
 
 @app.route("/admin")
 def admin():
-    return render_template('admin')
+    return render_template('admin.html')
 
 @app.route("/api/events", methods=['GET'])
 def get_events():
