@@ -56,6 +56,7 @@ def home():
         return render_template('student.html')
     elif current_user.role == 'parent':
         return render_template('parent.html')
+        return render_template('parents.html')
     else:
         return render_template('Index.html')
 
