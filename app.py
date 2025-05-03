@@ -61,7 +61,7 @@ def home():
 
     return f'{greeting} Ваш логин: {current_user.name}'
 
-# Регистрація
+# Реєстрація
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -90,6 +90,13 @@ def register():
         except Exception as e:
             flash(f'Помилка при реєстрації: {str(e)}')
             return redirect(url_for('register'))
+        
+    if registration_successful:
+        flash('Реєстрація успішна! Тепер ви можете увійти.', 'success')
+        return redirect(url_for('login'))
+    else:
+        flash('Помилка при реєстрації. Спробуйте ще раз.', 'error')
+        return redirect(url_for('register'))
         
     # Для Get - запиту відображаємо сторінку реєстрації
     return render_template('student.html')
