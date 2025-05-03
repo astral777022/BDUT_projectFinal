@@ -89,6 +89,8 @@
 	<script type="text/javascript" src="{{url_for('static', filename='js/jquery.validate.js')}}"></script>
 	<!-- Main JS -->
 	<script src="{{url_for('static', filename='js/main.js')}}"></script>
+	
+	{% block scripts %}{% endblock %}
 </body>
 </html>
 
