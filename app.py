@@ -1,5 +1,5 @@
 import os
-from flask import Flask, redirect, render_template, request, jsonify, send_from_directory, flash
+from flask import Flask, redirect, render_template, request, jsonify, send_from_directory, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from datetime import datetime
@@ -91,6 +91,9 @@ def register():
         except Exception as e:
             flash(f'Помилка при реєстрації: {str(e)}')
             return redirect(url_for('register'))
+        
+def registration_successful():
+    return "Регистрация прошла успешно"
         
     if registration_successful:
         flash('Реєстрація успішна! Тепер ви можете увійти.', 'success')
