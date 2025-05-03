@@ -38,8 +38,12 @@
 	</header>
 
 	<section class="offer" id="offer" data-type="background" data-speed="5">
-		<div class="header-back"></div>
-		<div class="back"></div>
+		<div class="header-back">
+			
+		</div>
+		<div class="back">
+			
+		</div>
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
@@ -148,7 +152,7 @@
 		</div>
 	</div>
 
-	<div style="display: none;">
+	<div style="display: none;">  <!-- Вікно кліка на дні у календарі -->
 		<div class="box-modal" id="exampleModal-3">
 			<div class="box-modal_close arcticmodal-close">
 				<img src="{{url_for('static', filename='img/close.png')}}" class="close">
@@ -164,7 +168,7 @@
 		</div>
 	</div>
 
-	<div style="display: none;">
+	<div style="display: none;">	<!-- Вікно усіх загальних подій -->
 		<div class="box-modal" id="exampleModal-4">
 			<div class="box-modal_close arcticmodal-close">
 				<img src="{{url_for('static', filename='img/close.png')}}" class="close">
@@ -174,5 +178,8 @@
 			</div>
 			<ul class="list-event" id="eventList"></ul>
 		</div>
+	</div>
+	<div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999;">
+		
 	</div>
 {% endblock %}
