@@ -5,8 +5,8 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import logging
-import bcrypt
 from sqlalchemy import func  # Для нечутливого до регістру пошуку
+import hashlib
 
 # Налаштування логування
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -79,7 +79,7 @@ def register():
             return redirect(url_for('register'))
 
         # Створення нового користувача
-        new_user = User(login=login, name=name, surname=surname, tel=tel, clas=clas, password=password, role=role)
+        new_user = User(login=login, name=name, surname=surname, tel=tel, clas=clas, password=hashlib.sha256(password.encode("utf-8")).hexdigest(), role=role)
         
         try:
             db.session.add(new_user)
@@ -295,14 +295,13 @@ def add_teacher():
             logger.warning(f"Логін уже зайнятий: {login}")
             return jsonify({'error': 'Логін уже зайнятий'}), 400
 
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         teacher = Teacher(
             login=login,
             first_name=first_name,
             last_name=last_name,
             class_name=class_name,
-            password=hashed_password
+            password=hashlib.sha256(password.encode()).hexdigest()
         )
         db.session.add(teacher)
         db.session.commit()
@@ -466,13 +465,12 @@ def add_admin():
             logger.warning(f"Логін уже зайнятий: {login}")
             return jsonify({'error': 'Логін уже зайнятий'}), 400
 
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         admin = Admin(
             login=login,
             first_name=first_name,
             last_name=last_name,
-            password=hashed_password
+            password=hashlib.sha256(password.encode("utf-8")).hexdigest()
         )
         db.session.add(admin)
         db.session.commit()
