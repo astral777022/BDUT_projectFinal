@@ -103,14 +103,14 @@ def registration_successful(is_successful):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        name = request.form['name']
+        name = request.form['login']
         password = request.form['password']
         user = User.query.filter_by(name=name, password=password).first()
         if user:
             login_user(user)
             return redirect(url_for('home'))
         flash('Невірні дані')
-    return render_template('Index.html')
+    return render_template('calendar.html')
 
 # Вихід
 @app.route('/logout')
