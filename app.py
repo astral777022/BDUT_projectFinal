@@ -313,7 +313,7 @@ def add_teacher():
             first_name=first_name,
             last_name=last_name,
             class_name=class_name,
-           password=hashlib.sha256(password.encode()).hexdigest()
+            password=hashlib.sha256(password.encode()).hexdigest()
         )
         db.session.add(teacher)
         db.session.commit()
@@ -476,7 +476,6 @@ def add_admin():
         if Teacher.query.filter_by(login=login).first() or Admin.query.filter_by(login=login).first():
             logger.warning(f"Логін уже зайнятий: {login}")
             return jsonify({'error': 'Логін уже зайнятий'}), 400
-
     #    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         admin = Admin(
