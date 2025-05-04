@@ -5,6 +5,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import logging
+#import bcrypt
 from sqlalchemy import func  # Для нечутливого до регістру пошуку
 import hashlib
 
@@ -103,12 +104,22 @@ def registration_successful(is_successful):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        name = request.form['login']
+        login = request.form['login']
         password = request.form['password']
-        user = User.query.filter_by(name=name, password=password).first()
+        user = User.query.filter_by(login=login, password=password).first()
+        print(login)
         if user:
             login_user(user)
-            return redirect(url_for('home'))
+            # Переадресація залежно від ролі користувача
+            print(user.role)
+            if user.role == 'teacher':
+                return redirect(url_for('teacher'))  # Перенаправлення на сторінку вчителя
+            elif user.role == 'student':
+                return redirect(url_for('student'))  # Перенаправлення на сторінку студента
+            elif user.role == 'parent':
+                return redirect(url_for('parent'))   # Перенаправлення на сторінку батьків
+            else:
+                return redirect(url_for('index'))    # Перенаправлення на головну сторінку за замовчуванням
         flash('Невірні дані')
     return render_template('calendar.html')
 
@@ -295,6 +306,7 @@ def add_teacher():
             logger.warning(f"Логін уже зайнятий: {login}")
             return jsonify({'error': 'Логін уже зайнятий'}), 400
 
+    #    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         teacher = Teacher(
             login=login,
@@ -464,7 +476,7 @@ def add_admin():
         if Teacher.query.filter_by(login=login).first() or Admin.query.filter_by(login=login).first():
             logger.warning(f"Логін уже зайнятий: {login}")
             return jsonify({'error': 'Логін уже зайнятий'}), 400
-
+    #    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         admin = Admin(
             login=login,
