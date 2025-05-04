@@ -35,6 +35,7 @@
                 flask
                 flask-sqlalchemy
                 sqlalchemy
+                flask-login
               ])
             ];
           };

@@ -5,8 +5,9 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import logging
-import bcrypt
+#import bcrypt
 from sqlalchemy import func  # Для нечутливого до регістру пошуку
+import hashlib
 
 # Налаштування логування
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -79,7 +80,7 @@ def register():
             return redirect(url_for('register'))
 
         # Створення нового користувача
-        new_user = User(login=login, name=name, surname=surname, tel=tel, clas=clas, password=password, role=role)
+        new_user = User(login=login, name=name, surname=surname, tel=tel, clas=clas, password=hashlib.sha256(password.encode("utf-8")).hexdigest(), role=role)
         
         try:
             db.session.add(new_user)
@@ -103,12 +104,22 @@ def registration_successful(is_successful):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        name = request.form['login']
+        login = request.form['login']
         password = request.form['password']
-        user = User.query.filter_by(name=name, password=password).first()
+        user = User.query.filter_by(login=login, password=password).first()
+        print(login)
         if user:
             login_user(user)
-            return redirect(url_for('home'))
+            # Переадресація залежно від ролі користувача
+            print(user.role)
+            if user.role == 'teacher':
+                return redirect(url_for('teacher'))  # Перенаправлення на сторінку вчителя
+            elif user.role == 'student':
+                return redirect(url_for('student'))  # Перенаправлення на сторінку студента
+            elif user.role == 'parent':
+                return redirect(url_for('parent'))   # Перенаправлення на сторінку батьків
+            else:
+                return redirect(url_for('index'))    # Перенаправлення на головну сторінку за замовчуванням
         flash('Невірні дані')
     return render_template('calendar.html')
 
@@ -295,14 +306,14 @@ def add_teacher():
             logger.warning(f"Логін уже зайнятий: {login}")
             return jsonify({'error': 'Логін уже зайнятий'}), 400
 
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    #    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         teacher = Teacher(
             login=login,
             first_name=first_name,
             last_name=last_name,
             class_name=class_name,
-            password=hashed_password
+           password=hashlib.sha256(password.encode()).hexdigest()
         )
         db.session.add(teacher)
         db.session.commit()
@@ -466,13 +477,13 @@ def add_admin():
             logger.warning(f"Логін уже зайнятий: {login}")
             return jsonify({'error': 'Логін уже зайнятий'}), 400
 
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    #    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         admin = Admin(
             login=login,
             first_name=first_name,
             last_name=last_name,
-            password=hashed_password
+            password=hashlib.sha256(password.encode("utf-8")).hexdigest()
         )
         db.session.add(admin)
         db.session.commit()
