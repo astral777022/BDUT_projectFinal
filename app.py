@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 # Створюємо новий додаток Flask
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'секретный_ключ'
+app.config['SECRET_KEY'] = 'xMvgBBlXD+EWnh3tXqR9zXgiWEgGKfYYddE8LQh9HPw='
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///newflask.db'
 app.config['UPLOAD_FOLDER'] = 'upload'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -106,7 +106,7 @@ def login():
     if request.method == 'POST':
         login = request.form['login']
         password = request.form['password']
-        user = User.query.filter_by(login=login, password=password).first()
+        user = User.query.filter_by(login=login, password=hashlib.sha256(password.encode("utf-8")).hexdigest()).first()
         print(login)
         if user:
             login_user(user)
@@ -121,7 +121,7 @@ def login():
             else:
                 return redirect(url_for('index'))    # Перенаправлення на головну сторінку за замовчуванням
         flash('Невірні дані')
-    return render_template('calendar.html')
+    return render_template('Index.html')
 
 # Вихід
 @app.route('/logout')
