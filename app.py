@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 # Створюємо новий додаток Flask
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'xMvgBBlXD+EWnh3tXqR9zXgiWEgGKfYYddE8LQh9HPw='
+app.config['SECRET_KEY'] = 'test'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///newflask.db'
 app.config['UPLOAD_FOLDER'] = 'upload'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -36,6 +36,30 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(150))
     role = db.Column(db.String(50))  # 'teacher', 'student', 'parent'
 
+class Event(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+
+class File(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    file_name = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Teacher(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.String(50), nullable=False, unique=True)
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    class_name = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+
+class Admin(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.String(50), nullable=False, unique=True)
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
 # Моделі
 #class Post(db.Model):
 #    id = db.Column(db.Integer, primary_key=True)
@@ -131,32 +155,6 @@ def logout():
     return redirect(url_for('login'))
 
 
-class Event(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
-
-class File(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    file_name = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-class Teacher(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    login = db.Column(db.String(50), nullable=False, unique=True)
-    first_name = db.Column(db.String(100), nullable=False)
-    last_name = db.Column(db.String(100), nullable=False)
-    class_name = db.Column(db.String(50), nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-
-class Admin(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    login = db.Column(db.String(50), nullable=False, unique=True)
-    first_name = db.Column(db.String(100), nullable=False)
-    last_name = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-
-# Декоратор головної сторінки
 @app.route("/index")
 def index():
     return render_template('Index.html')
