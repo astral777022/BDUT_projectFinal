@@ -36,6 +36,7 @@
                 flask-sqlalchemy
                 sqlalchemy
                 flask-login
+                pytest
               ])
             ];
           };
